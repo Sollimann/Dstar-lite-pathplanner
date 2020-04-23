@@ -1,7 +1,6 @@
 import numpy as np
+from utils import get_movements_4n, get_movements_8n
 from typing import Dict, List
-
-from utils import heuristic, get_movements_4n, get_movements_8n
 
 OBSTACLE = 255
 UNOCCUPIED = 0
@@ -45,7 +44,7 @@ class OccupancyGridMap:
         """
         self.occupancy_grid_map = new_ogrid
 
-    def is_unoccupied(self, pos) -> bool:
+    def is_unoccupied(self, pos: (int,int)) -> bool:
         """
         :param pos: cell position we wish to check
         :return: True if cell is occupied with obstacle, False else
@@ -68,31 +67,16 @@ class OccupancyGridMap:
         (x, y) = cell
         return 0 <= x < self.x_dim and 0 <= y < self.y_dim
 
-    def cost(self, from_node: (int, int), to_node: (int, int)) -> float:
-        """
-        computes the cost of moving from one node to another
-        :param from_node: (x,y)
-        :param to_node: (x,y)
-        :return: the computed cost of moving
-        """
-        if not self.is_unoccupied(from_node) or not self.is_unoccupied(to_node):
-            return float('inf')
-        return heuristic(from_node, to_node)
-
-    def filter_bounds_and_obstacles(self, neighbors: List):
-        filtered = [node for node in neighbors if self.is_unoccupied(node) and self.in_bounds(node)]
-        # self.not_in_vistited(filtered)
+    def filter_bounds(self, neighbors: List):
+        filtered = [node for node in neighbors if self.in_bounds(node)]
         return filtered
 
-    def not_in_vistited(self, neighbors: List):
-        return [node for node in neighbors if node not in self.visited]
-
-    def neighbors(self, cell: (int, int)) -> list:
+    def succ(self, vertex: (int, int)) -> list:
         """
-        :param cell:
+        :param vertex:
         :return:
         """
-        (x, y) = cell
+        (x, y) = vertex
 
         if self.exploration_setting == '4N':  # change this
             movements = get_movements_4n(x=x, y=y)
@@ -101,9 +85,7 @@ class OccupancyGridMap:
 
         if (x + y) % 2 == 0: movements.reverse()
 
-        # filter neighbors
-        filtered_movements = self.filter_bounds_and_obstacles(neighbors=movements)
-        print("mov {}".format(filtered_movements))
+        filtered_movements = self.filter_bounds(neighbors=movements)
         return list(filtered_movements)
 
     def set_obstacle(self, pos: (int, int)):

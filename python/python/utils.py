@@ -10,20 +10,7 @@ def heuristic(p: (int, int), q: (int, int)) -> float:
     :param q: (x,y)
     :return: manhattan distance
     """
-    dist = math.sqrt((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2)
-    return dist
-
-
-def reconstruct_path(came_from: (int, int), start: (int, int), goal: (int, int)) -> List:
-    """Reconstruct a shortest path from a dictionary of back-pointers"""
-    current = goal
-    path = [current]
-    while current != start:
-        current = came_from[current]
-        path.append(current)
-    path.append(start)  # optional
-    path.reverse()  # optional
-    return path
+    return math.sqrt(abs(p[0] - q[0]) ** 2 + abs(p[1] - q[1]) ** 2)
 
 
 def get_movements_4n(x: int, y: int) -> List:
