@@ -6,6 +6,12 @@ from utils import heuristic
 
 class DStarLite:
     def __init__(self, map: OccupancyGridMap, s_start: (int, int), s_goal: (int, int), view_range=2):
+        """
+        :param map: the ground truth map of the environment provided by gui
+        :param s_start: start location
+        :param s_goal: end location
+        :param view_range: how far ahead we scan for changed cells
+        """
         self.view_range = view_range
         self.s_start = s_start
         self.s_goal = s_goal
@@ -93,7 +99,7 @@ class DStarLite:
             # rescan local area
             local_observation = self.sensed_map.local_observation(global_position=global_position,
                                                                   view_range=self.view_range)
-
+        # print(local_observation)
         # update global map from local data
         # return new obstacles added to the map
         vertices_with_new_cost = self.sensed_map.update_global_from_local_grid(local_grid=local_observation)
@@ -103,12 +109,13 @@ class DStarLite:
         path = [robot_position]
         self.s_start = robot_position
         self.s_last = self.s_start
+        self.rescan(global_position=robot_position, update_globally=True)
         self.compute_shortest_path()
 
         while self.s_start != self.s_goal:
             assert (self.rhs[self.s_start] != float('inf')), "There is no known path!"
 
-            succ = self.sensed_map.succ(self.s_start)
+            succ = self.sensed_map.succ(self.s_start, avoid_obstacles=False)
             min_s = float('inf')
             arg_min = None
             for s_ in succ:
@@ -116,9 +123,28 @@ class DStarLite:
                 if temp < min_s:
                     min_s = temp
                     arg_min = s_
+
+            #### THIS IS FOR DEBUG ####
+            succ_succ = self.sensed_map.succ(arg_min)
+            min_s = float('inf')
+            arg_min_s = None
+            for s__ in succ_succ:
+                temp = self.c(arg_min, s__) + self.g[s__]
+                if temp < min_s:
+                    min_s = temp
+                    arg_min_s = s__
+
+            if self.s_start == arg_min_s:
+                print("you are stuck in a loop")
+                print("s_start: {}, arg_min_s: {}".format(self.s_start, arg_min_s))
+                print("len path: {}".format(len(path)))
+
+
+            ###########################
+
+            ### algorithm sometimes gets stuck here for some reason !!! FIX
             self.s_start = arg_min
             path.append(self.s_start)
-
             # scan graph for changed costs
             vertices_with_new_cost = self.rescan(global_position=self.s_start, update_globally=False)
 
@@ -148,4 +174,4 @@ class DStarLite:
                             self.update_vertex(u)
                 self.compute_shortest_path()
         print("path found!")
-        return path, self.sensed_map.occupancy_grid_map
+        return path, self.g, self.rhs

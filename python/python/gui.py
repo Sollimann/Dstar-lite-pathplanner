@@ -126,6 +126,7 @@ class Animation:
                     self.set_position((x, y))
 
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
+                print("backspace automates the press space")
                 if not self.cont:
                     self.cont = True
                 else:

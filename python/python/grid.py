@@ -67,12 +67,14 @@ class OccupancyGridMap:
         (x, y) = cell
         return 0 <= x < self.x_dim and 0 <= y < self.y_dim
 
-    def filter_bounds(self, neighbors: List):
-        filtered = [node for node in neighbors if self.in_bounds(node)]
-        return filtered
+    def filter(self, neighbors: List, avoid_obstacles: bool):
+        if avoid_obstacles:
+            return [node for node in neighbors if self.in_bounds(node) and self.is_unoccupied(node)]
+        return [node for node in neighbors if self.in_bounds(node)]
 
-    def succ(self, vertex: (int, int)) -> list:
+    def succ(self, vertex: (int, int), avoid_obstacles: bool = False) -> list:
         """
+        :param avoid_obstacles:
         :param vertex:
         :return:
         """
@@ -85,7 +87,7 @@ class OccupancyGridMap:
 
         if (x + y) % 2 == 0: movements.reverse()
 
-        filtered_movements = self.filter_bounds(neighbors=movements)
+        filtered_movements = self.filter(neighbors=movements, avoid_obstacles=avoid_obstacles)
         return list(filtered_movements)
 
     def set_obstacle(self, pos: (int, int)):
