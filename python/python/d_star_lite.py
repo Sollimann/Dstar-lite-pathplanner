@@ -30,6 +30,10 @@ class DStarLite:
         self.U.insert(self.s_goal, Priority(heuristic(self.s_start, self.s_goal), 0))
 
     def calculate_key(self, s: (int, int)):
+        """
+        :param s: the vertex we want to calculate key
+        :return: Priority class of the two keys
+        """
         k1 = min(self.g[s], self.rhs[s]) + heuristic(self.s_start, s) + self.k_m
         k2 = min(self.g[s], self.rhs[s])
         return Priority(k1, k2)
@@ -37,9 +41,9 @@ class DStarLite:
     def c(self, u: (int, int), v: (int, int)) -> float:
         """
         calcuclate the cost between nodes
-        :param u:
-        :param v:
-        :return:
+        :param u: from vertex
+        :param v: to vertex
+        :return: euclidean distance to traverse. inf if obstacle in path
         """
         if not self.sensed_map.is_unoccupied(u) or not self.sensed_map.is_unoccupied(v):
             return float('inf')

@@ -40,7 +40,7 @@ class OccupancyGridMap:
     def set_map(self, new_ogrid):
         """
         :param new_ogrid:
-        :return:
+        :return: None
         """
         self.occupancy_grid_map = new_ogrid
 
@@ -68,6 +68,11 @@ class OccupancyGridMap:
         return 0 <= x < self.x_dim and 0 <= y < self.y_dim
 
     def filter(self, neighbors: List, avoid_obstacles: bool):
+        """
+        :param neighbors: list of potential neighbors before filtering
+        :param avoid_obstacles: if True, filter out obstacle cells in the list
+        :return:
+        """
         if avoid_obstacles:
             return [node for node in neighbors if self.in_bounds(node) and self.is_unoccupied(node)]
         return [node for node in neighbors if self.in_bounds(node)]
@@ -75,7 +80,7 @@ class OccupancyGridMap:
     def succ(self, vertex: (int, int), avoid_obstacles: bool = False) -> list:
         """
         :param avoid_obstacles:
-        :param vertex:
+        :param vertex: vertex you want to find direct successors from
         :return:
         """
         (x, y) = vertex
@@ -85,6 +90,7 @@ class OccupancyGridMap:
         else:
             movements = get_movements_8n(x=x, y=y)
 
+        # not needed. Just makes aesthetics to the path
         if (x + y) % 2 == 0: movements.reverse()
 
         filtered_movements = self.filter(neighbors=movements, avoid_obstacles=avoid_obstacles)
@@ -101,14 +107,18 @@ class OccupancyGridMap:
 
     def remove_obstacle(self, pos: (int, int)):
         """
-        :param pos:
-        :return:
+        :param pos: position of obstacle
+        :return: None
         """
         (x, y) = (round(pos[0]), round(pos[1]))  # make sure pos is int
         (row, col) = (x, y)
         self.occupancy_grid_map[row, col] = UNOCCUPIED
 
     def update_global_from_local_grid(self, local_grid: Dict) -> List:
+        """
+        :param local_grid: dictionary of cells
+        :return: list of cells that has just recently changed value
+        """
         changed_costs = []
         for node, value in local_grid.items():
             if value == OBSTACLE:
@@ -127,9 +137,9 @@ class OccupancyGridMap:
 
     def local_observation(self, global_position: (int, int), view_range: int = 2) -> Dict:
         """
-        :param global_position:
-        :param view_range:
-        :return:obs
+        :param global_position: position of robot in the global map frame
+        :param view_range: how far ahead we should look
+        :return: dictionary of new observations
         """
         (px, py) = global_position
         nodes = [(x, y) for x in range(px - view_range, px + view_range + 1)
