@@ -48,6 +48,8 @@ This is the optimized version as explained in Figure 4 of the paper.
 ## Known bugs. Please contribute
 After several attempts to both implement the non-optimized and the optimized version of the D* Lite algorithm, I always face the same issue. On some occations the algorithm get stuck in an infinite loop in the 'Procedure Main()' as denoted in the paper or move_and_replan method in code. Now, it seems that from browsing the web that I am not the only one facing this issue. It seems that this is triggered by some obstacle formation (particularly large vertical walls), where the algorithm stops exploring nodes and ends up stuck in an infinite loop jumping between two options for the next best vertex. I have been debugging the code for some time now, but have yet to come up with a fix to this issue. It can however be that I have missinterpreted the pseudo-code for the algorithm somewhere, and I suspect there is a minor detail I have left out. I would kindly take a pull request if someone where to find a fix for this. 
 
+I have already posted the bug on stack-overflow, and can be found [here](https://stackoverflow.com/questions/61417065/d-lite-shortest-path-search-algorithm-sometimes-gets-stuck-infinite-loop)
+
 
 ## Implementational Details:
 Here is a list of the more interesting tweaks.
