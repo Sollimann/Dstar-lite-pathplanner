@@ -32,7 +32,7 @@ Here is a list of the more interesting tweaks that we applied to improve the D* 
 * pip install numpy
 
 ## install poetry package mananger and virtual env (or use pipenv):
-you will need to have the OpenGL/GLUT libraries installed for this to work. But you do not need them to use the Dstar class in your own program.
+you can use pipenv or [poetry](https://www.pythoncheatsheet.org/blog/python-projects-with-poetry-and-vscode-part-1/) to active virtual env.
 ```
 $ pip install poetry
 $ cd /d-star-lite/python
