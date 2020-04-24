@@ -60,7 +60,8 @@ class Animation:
         x, row
         """
         self.world = OccupancyGridMap(x_dim=x_dim,
-                                      y_dim=y_dim)
+                                      y_dim=y_dim,
+                                      exploration_setting='8N')
 
         # Set title of screen
         pygame.display.set_caption(title)
