@@ -4,7 +4,7 @@ Implementation of the D* lite algorithm for pathplanning in Python and eventuall
 ![pygame gui](docs/screengrab.png)
 
 
-This software is an implementation of the D*-Lite algorithm as explained in [Koenig, 2002]. The D* Lite algorithm was developed by Sven Koenig and Maxim Likhachev for a faster more lightweight alternative to the D* algorithm (developed by Anthony Stentz in 1995). 
+This software is an implementation of the D*-Lite algorithm as explained in [Koenig, 2002](http://idm-lab.org/bib/abstracts/papers/aaai02b.pdf). The D* Lite algorithm was developed by Sven Koenig and Maxim Likhachev for a faster more lightweight alternative to the D* algorithm (developed by Anthony Stentz in 1995). 
 
 ### idea
 
