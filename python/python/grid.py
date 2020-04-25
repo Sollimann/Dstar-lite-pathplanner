@@ -44,7 +44,7 @@ class OccupancyGridMap:
         """
         self.occupancy_grid_map = new_ogrid
 
-    def is_unoccupied(self, pos: (int,int)) -> bool:
+    def is_unoccupied(self, pos: (int, int)) -> bool:
         """
         :param pos: cell position we wish to check
         :return: True if cell is occupied with obstacle, False else
@@ -121,12 +121,11 @@ class OccupancyGridMap:
         """
         changed_costs = []
         for node, value in local_grid.items():
-            if value == OBSTACLE:
-                if self.is_unoccupied(node):
-                    # if not obstacle before, but is now
-                    changed_costs.append(node)
-                    # add the obstacle
-                    self.set_obstacle(node)
+            if value == OBSTACLE and self.is_unoccupied(node):
+                # if not obstacle before, but is now
+                changed_costs.append(node)
+                # add the obstacle
+                self.set_obstacle(node)
             else:
                 if not self.is_unoccupied(node):
                     # if obstacle before, but not now

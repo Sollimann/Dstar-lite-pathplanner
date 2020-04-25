@@ -1,6 +1,19 @@
-
 import math
 from typing import List
+
+
+class Vertex:
+    def __init__(self, pos: (int, int)):
+        self.pos = pos
+        self.edges_and_costs = {}
+
+    def add_edge_with_cost(self, succ: (int, int), cost: float):
+        if succ != self.pos:
+            self.edges_and_costs[succ] = cost
+
+    @property
+    def edges(self):
+        return self.edges_and_costs
 
 
 def heuristic(p: (int, int), q: (int, int)) -> float:
