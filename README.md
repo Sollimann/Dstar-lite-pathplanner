@@ -45,7 +45,6 @@ This is the optimized version as explained in Figure 4 of the paper.
 2. These nodes are nodes those goal distances have changed or not been caculated before and are relevant to recalculate the new shortest path to the goal.
 3. Incremental heuristic search algorithms: able to focus and build upon previous solutions
 
-
 ## Pseudo code, D* Lite optimized version
 ![D* Lite optimized](docs/pseudocode.png)
 
