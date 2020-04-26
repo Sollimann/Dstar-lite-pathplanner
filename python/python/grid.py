@@ -1,5 +1,5 @@
 import numpy as np
-from utils import get_movements_4n, get_movements_8n
+from utils import get_movements_4n, get_movements_8n, heuristic, Vertices, Vertex
 from typing import Dict, List
 
 OBSTACLE = 255
@@ -44,7 +44,7 @@ class OccupancyGridMap:
         """
         self.occupancy_grid_map = new_ogrid
 
-    def is_unoccupied(self, pos: (int,int)) -> bool:
+    def is_unoccupied(self, pos: (int, int)) -> bool:
         """
         :param pos: cell position we wish to check
         :return: True if cell is occupied with obstacle, False else
@@ -114,27 +114,6 @@ class OccupancyGridMap:
         (row, col) = (x, y)
         self.occupancy_grid_map[row, col] = UNOCCUPIED
 
-    def update_global_from_local_grid(self, local_grid: Dict) -> List:
-        """
-        :param local_grid: dictionary of cells
-        :return: list of cells that has just recently changed value
-        """
-        changed_costs = []
-        for node, value in local_grid.items():
-            if value == OBSTACLE:
-                if self.is_unoccupied(node):
-                    # if not obstacle before, but is now
-                    changed_costs.append(node)
-                    # add the obstacle
-                    self.set_obstacle(node)
-            else:
-                if not self.is_unoccupied(node):
-                    # if obstacle before, but not now
-                    changed_costs.append(node)
-                    # remove the obstacle
-                    self.remove_obstacle(node)
-        return changed_costs
-
     def local_observation(self, global_position: (int, int), view_range: int = 2) -> Dict:
         """
         :param global_position: position of robot in the global map frame
@@ -146,3 +125,58 @@ class OccupancyGridMap:
                  for y in range(py - view_range, py + view_range + 1)
                  if self.in_bounds((x, y))]
         return {node: UNOCCUPIED if self.is_unoccupied(pos=node) else OBSTACLE for node in nodes}
+
+
+class SLAM:
+    def __init__(self, map: OccupancyGridMap, view_range: int):
+        self.ground_truth_map = map
+        self.slam_map = OccupancyGridMap(x_dim=map.x_dim,
+                                         y_dim=map.y_dim)
+        self.view_range = view_range
+
+    def set_ground_truth_map(self, gt_map: OccupancyGridMap):
+        self.ground_truth_map = gt_map
+
+    def c(self, u: (int, int), v: (int, int)) -> float:
+        """
+        calcuclate the cost between nodes
+        :param u: from vertex
+        :param v: to vertex
+        :return: euclidean distance to traverse. inf if obstacle in path
+        """
+        if not self.slam_map.is_unoccupied(u) or not self.slam_map.is_unoccupied(v):
+            return float('inf')
+        else:
+            return heuristic(u, v)
+
+    def rescan(self, global_position: (int, int)):
+
+        # rescan local area
+        local_observation = self.ground_truth_map.local_observation(global_position=global_position,
+                                                                    view_range=self.view_range)
+
+        vertices = self.update_changed_edge_costs(local_grid=local_observation)
+        return vertices, self.slam_map
+
+    def update_changed_edge_costs(self, local_grid: Dict) -> Vertices:
+        vertices = Vertices()
+        for node, value in local_grid.items():
+            # if obstacle
+            if value == OBSTACLE:
+                if self.slam_map.is_unoccupied(node):
+                    v = Vertex(pos=node)
+                    succ = self.slam_map.succ(node)
+                    for u in succ:
+                        v.add_edge_with_cost(succ=u, cost=self.c(u, v.pos))
+                    vertices.add_vertex(v)
+                    self.slam_map.set_obstacle(node)
+            else:
+                # if white cell
+                if not self.slam_map.is_unoccupied(node):
+                    v = Vertex(pos=node)
+                    succ = self.slam_map.succ(node)
+                    for u in succ:
+                        v.add_edge_with_cost(succ=u, cost=self.c(u, v.pos))
+                    vertices.add_vertex(v)
+                    self.slam_map.remove_obstacle(node)
+        return vertices
