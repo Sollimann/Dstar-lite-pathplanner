@@ -60,6 +60,6 @@ if __name__ == '__main__':
             if new_observation["pos"] == UNOCCUPIED:
                 dstar.global_map.remove_obstacle(pos=new_observation["pos"])
 
-        if new_position != last_position:
+        if new_position != last_position and new_observation:
             last_position = new_position
             path, g, rhs = dstar.move_and_replan(robot_position=new_position)
