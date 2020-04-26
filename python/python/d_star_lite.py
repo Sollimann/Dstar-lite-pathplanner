@@ -102,20 +102,21 @@ class DStarLite:
         vertices = []
         for node, value in local_grid.items():
             if value == OBSTACLE and self.sensed_map.is_unoccupied(node):
-                v = Vertex(pos=node)
+                v = Vertex(pos=(1, 1))
                 succ = self.sensed_map.succ(node)
                 for u in succ:
-                    v.add_edge_with_cost(succ=u, cost=self.c(u, v))
+                    v.add_edge_with_cost(succ=u, cost=self.c(u, v.pos))
                 vertices.append(v)
-                self.sensed_map.set_obstacle(node)
+                # self.sensed_map.set_obstacle(node)
             else:
                 if not self.sensed_map.is_unoccupied(node):
-                    v = Vertex(pos=node)
+                    v = Vertex(pos=(1, 1))
                     succ = self.sensed_map.succ(node)
                     for u in succ:
-                        v.add_edge_with_cost(succ=u, cost=self.c(u, v))
+                        v.add_edge_with_cost(succ=u, cost=self.c(u, v.pos))
                     vertices.append(v)
-                    self.sensed_map.remove_obstacle(node)
+                    # self.sensed_map.remove_obstacle(node)
+        print(vertices)
         return vertices
 
     def rescan(self, global_position: (int, int), update_globally: bool):
@@ -129,12 +130,12 @@ class DStarLite:
                                                                   view_range=self.view_range)
 
         ## compute c_old for all changed edges:
-        changed_vertices_with_old_cost = self.update_changed_edge_costs(local_grid=local_observation)
+        #changed_vertices_with_old_cost = self.update_changed_edge_costs(local_grid=local_observation)
 
         # update global map from local data
         # return new obstacles added to the map
-        #vertices_with_new_cost = self.sensed_map.update_global_from_local_grid(local_grid=local_observation)
-        return changed_vertices_with_old_cost
+        vertices_with_new_cost = self.sensed_map.update_global_from_local_grid(local_grid=local_observation)
+        return vertices_with_new_cost
 
     def move_and_replan(self, robot_position: (int, int)):
         path = [robot_position]
@@ -155,7 +156,6 @@ class DStarLite:
                     min_s = temp
                     arg_min = s_
 
-
             ###########################
 
             ### algorithm sometimes gets stuck here for some reason !!! FIX
@@ -171,7 +171,7 @@ class DStarLite:
 
                 # for all directed edges (u,v) with changed edge costs
                 for v in changed_vertices_with_new_cost:
-                    succ_v = self.sensed_map.succ(vertex=v.pos)
+                    succ_v = self.sensed_map.succ(vertex=v)
                     for u in succ_v:
                         c_new = self.c(u, v)
                         c_old = c_new

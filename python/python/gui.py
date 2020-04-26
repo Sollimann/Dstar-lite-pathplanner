@@ -29,7 +29,7 @@ class Animation:
                  y_dim=50,
                  start=(0, 0),
                  goal=(50, 50),
-                 viewing_range=3):
+                 viewing_range=5):
 
         self.width = width
         self.height = height

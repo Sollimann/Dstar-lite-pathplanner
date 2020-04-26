@@ -121,6 +121,7 @@ class OccupancyGridMap:
         """
         changed_costs = []
         for node, value in local_grid.items():
+            #print("node: {}".format(node))
             if value == OBSTACLE and self.is_unoccupied(node):
                 # if not obstacle before, but is now
                 changed_costs.append(node)
