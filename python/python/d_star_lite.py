@@ -1,11 +1,12 @@
 from priority_queue import PriorityQueue, Priority
 from grid import OccupancyGridMap
 import numpy as np
-from utils import heuristic, Vertex
+from utils import heuristic, Vertex, Vertices
 from typing import Dict, List
 
 OBSTACLE = 255
 UNOCCUPIED = 0
+
 
 class DStarLite:
     def __init__(self, map: OccupancyGridMap, s_start: (int, int), s_goal: (int, int), view_range=2):
@@ -89,7 +90,7 @@ class DStarLite:
                     if self.rhs[s] == self.c(s, u) + self.g_old:
                         if s != self.s_goal:
                             min_s = float('inf')
-                            succ = self.sensed_map.succ(cell=s)
+                            succ = self.sensed_map.succ(vertex=s)
                             for s_ in succ:
                                 temp = self.c(s, s_) + self.g[s_]
                                 if min_s > temp:
@@ -97,8 +98,8 @@ class DStarLite:
                             self.rhs[s] = min_s
                     self.update_vertex(u)
 
-    def update_changed_edge_costs(self, local_grid: Dict) -> List:
-        vertices = []
+    def update_changed_edge_costs(self, local_grid: Dict) -> Vertices:
+        vertices = Vertices()
         for node, value in local_grid.items():
             if value == OBSTACLE:
                 if self.sensed_map.is_unoccupied(node):
@@ -106,7 +107,7 @@ class DStarLite:
                     succ = self.sensed_map.succ(node)
                     for u in succ:
                         v.add_edge_with_cost(succ=u, cost=self.c(u, v.pos))
-                    vertices.append(v)
+                    vertices.add_vertex(v)
 
                     # add the obstacle
                     self.sensed_map.set_obstacle(node)
@@ -116,13 +117,14 @@ class DStarLite:
                     succ = self.sensed_map.succ(node)
                     for u in succ:
                         v.add_edge_with_cost(succ=u, cost=self.c(u, v.pos))
-                    vertices.append(v)
+                    vertices.add_vertex(v)
 
                     # remove the obstacle
                     self.sensed_map.remove_obstacle(node)
         return vertices
 
     def rescan(self, global_position: (int, int), update_globally: bool):
+
         if update_globally:
             # rescan local area
             local_observation = self.global_map.local_observation(global_position=global_position,
@@ -132,8 +134,7 @@ class DStarLite:
             local_observation = self.sensed_map.local_observation(global_position=global_position,
                                                                   view_range=self.view_range)
 
-        changed_vertices_with_old_cost = self.update_changed_edge_costs(local_grid=local_observation)
-        return changed_vertices_with_old_cost
+        return self.update_changed_edge_costs(local_grid=local_observation)
 
     def move_and_replan(self, robot_position: (int, int)):
         path = [robot_position]
@@ -158,18 +159,20 @@ class DStarLite:
             self.s_start = arg_min
             path.append(self.s_start)
             # scan graph for changed costs
-            changed_vertices_with_old_cost = self.rescan(global_position=self.s_start, update_globally=False)
+            changed_edges_with_old_cost = self.rescan(global_position=self.s_start, update_globally=True)
 
             # if any edge costs changed
-            if changed_vertices_with_old_cost:
+            if changed_edges_with_old_cost:
                 self.k_m += heuristic(self.s_last, self.s_start)
                 self.s_last = self.s_start
 
                 # for all directed edges (u,v) with changed edge costs
-                for v in changed_vertices_with_old_cost:
-                    succ_v = v.edges_and_c_old
+                vertices = changed_edges_with_old_cost.vertices
+                for vertex in vertices:
+                    v = vertex.pos
+                    succ_v = vertex.edges_and_c_old
                     for u, c_old in succ_v.items():
-                        c_new = self.c(u, v.pos)
+                        c_new = self.c(u, v)
                         if c_old > c_new:
                             if u != self.s_goal:
                                 self.rhs[u] = min(self.rhs[u], self.c(u, v) + self.g[v])

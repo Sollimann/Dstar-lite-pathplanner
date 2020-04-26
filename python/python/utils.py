@@ -16,6 +16,18 @@ class Vertex:
         return self.edges_and_costs
 
 
+class Vertices:
+    def __init__(self):
+        self.list = []
+
+    def add_vertex(self, v: Vertex):
+        self.list.append(v)
+
+    @property
+    def vertices(self):
+        return self.list
+
+
 def heuristic(p: (int, int), q: (int, int)) -> float:
     """
     Helper function to compute distance between two points.
