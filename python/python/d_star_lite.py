@@ -9,14 +9,15 @@ UNOCCUPIED = 0
 
 
 class DStarLite:
-    def __init__(self, map: OccupancyGridMap, s_start: (int, int), s_goal: (int, int), view_range=2):
+    def __init__(self, map: OccupancyGridMap, s_start: (int, int), s_goal: (int, int)):
         """
         :param map: the ground truth map of the environment provided by gui
         :param s_start: start location
         :param s_goal: end location
-        :param view_range: how far ahead we scan for changed cells
         """
-        self.view_range = view_range
+        self.new_edges_and_old_costs = None
+
+        # algorithm start
         self.s_start = s_start
         self.s_goal = s_goal
         self.s_last = s_start
@@ -25,7 +26,6 @@ class DStarLite:
         self.rhs = np.ones((map.x_dim, map.y_dim)) * np.inf
         self.g = self.rhs.copy()
 
-        self.global_map = map
         self.sensed_map = OccupancyGridMap(x_dim=map.x_dim,
                                            y_dim=map.y_dim,
                                            exploration_setting='8N')
@@ -98,49 +98,16 @@ class DStarLite:
                             self.rhs[s] = min_s
                     self.update_vertex(u)
 
-    def update_changed_edge_costs(self, local_grid: Dict) -> Vertices:
-        vertices = Vertices()
-        for node, value in local_grid.items():
-            if value == OBSTACLE:
-                if self.sensed_map.is_unoccupied(node):
-                    v = Vertex(pos=node)
-                    succ = self.sensed_map.succ(node)
-                    for u in succ:
-                        v.add_edge_with_cost(succ=u, cost=self.c(u, v.pos))
-                    vertices.add_vertex(v)
+    def rescan(self) -> Vertices:
 
-                    # add the obstacle
-                    self.sensed_map.set_obstacle(node)
-            else:
-                if not self.sensed_map.is_unoccupied(node):
-                    v = Vertex(pos=node)
-                    succ = self.sensed_map.succ(node)
-                    for u in succ:
-                        v.add_edge_with_cost(succ=u, cost=self.c(u, v.pos))
-                    vertices.add_vertex(v)
-
-                    # remove the obstacle
-                    self.sensed_map.remove_obstacle(node)
-        return vertices
-
-    def rescan(self, global_position: (int, int), update_globally: bool):
-
-        if update_globally:
-            # rescan local area
-            local_observation = self.global_map.local_observation(global_position=global_position,
-                                                                  view_range=self.view_range)
-        else:
-            # rescan local area
-            local_observation = self.sensed_map.local_observation(global_position=global_position,
-                                                                  view_range=self.view_range)
-
-        return self.update_changed_edge_costs(local_grid=local_observation)
+        new_edges_and_old_costs = self.new_edges_and_old_costs
+        self.new_edges_and_old_costs = None
+        return new_edges_and_old_costs
 
     def move_and_replan(self, robot_position: (int, int)):
         path = [robot_position]
         self.s_start = robot_position
         self.s_last = self.s_start
-        self.rescan(global_position=robot_position, update_globally=True)
         self.compute_shortest_path()
 
         while self.s_start != self.s_goal:
@@ -159,8 +126,8 @@ class DStarLite:
             self.s_start = arg_min
             path.append(self.s_start)
             # scan graph for changed costs
-            changed_edges_with_old_cost = self.rescan(global_position=self.s_start, update_globally=True)
-
+            changed_edges_with_old_cost = self.rescan()
+            #print("len path: {}".format(len(path)))
             # if any edge costs changed
             if changed_edges_with_old_cost:
                 self.k_m += heuristic(self.s_last, self.s_start)
@@ -186,6 +153,6 @@ class DStarLite:
                                         min_s = temp
                                 self.rhs[u] = min_s
                             self.update_vertex(u)
-                self.compute_shortest_path()
+            self.compute_shortest_path()
         print("path found!")
         return path, self.g, self.rhs
