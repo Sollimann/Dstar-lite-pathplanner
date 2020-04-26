@@ -70,10 +70,9 @@ if __name__ == '__main__':
                 dstar.global_map.remove_obstacle(pos=new_observation["pos"])
         """
 
-        #if new_map != old_map:
-        #print("new map")
-        #old_map = new_map
-        slam.set_ground_truth_map(gt_map=new_map)
+        if new_observation is not None:
+            old_map = new_map
+            slam.set_ground_truth_map(gt_map=new_map)
 
         if new_position != last_position:
             last_position = new_position
