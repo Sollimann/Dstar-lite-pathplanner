@@ -25,6 +25,7 @@ class Priority:
         :param other: comparable keys
         :return: lexicographic order
         """
+        return self.k1 < other.k1 or (self.k1 == other.k1 and self.k2 <= other.k2)
 
 
 class PriorityNode:
