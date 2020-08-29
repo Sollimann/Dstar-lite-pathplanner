@@ -1,5 +1,15 @@
+[![GitHub stars](https://img.shields.io/github/stars/Sollimann/d-star-lite.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/Sollimann/d-star-lite/stargazers/)
+[![GitHub watchers](https://img.shields.io/github/watchers/Sollimann/d-star-lite.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/Sollimann/d-star-lite/watchers/)
+[![GitHub forks](https://img.shields.io/github/forks/Sollimann/d-star-lite.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/Sollimann/d-star-lite/network/)
 # D* Lite incremental pathplanning algorithm for robotics
 Implementation of the D* lite algorithm for pathplanning in Python and eventually c++
+[![version](https://img.shields.io/badge/version-1.0.0-blue)](https://GitHub.com/Sollimann/d-star-lite/releases/)
+[![GitHub contributors](https://img.shields.io/github/contributors/Sollimann/d-star-lite.svg)](https://GitHub.com/Sollimann/d-star-lite/graphs/contributors/)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Sollimann/d-star-lite/graphs/commit-activity)
+[![GitHub pull-requests](https://img.shields.io/github/issues-pr/Sollimann/d-star-lite.svg)](https://GitHub.com/Sollimann/d-star-lite/pulls)
+[![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/Sollimann/d-star-lite.svg)](https://GitHub.com/Sollimann/d-star-lite/pulls)
+[![HitCount](http://hits.dwyl.com/Sollimann/d-star-lite.svg)](http://hits.dwyl.com/Sollimann/d-star-lite)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ![pygame gui](docs/screengrab.png)
 
