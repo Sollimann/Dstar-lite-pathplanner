@@ -8,7 +8,7 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Sollimann/d-star-lite/graphs/commit-activity)
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/Sollimann/d-star-lite.svg)](https://GitHub.com/Sollimann/d-star-lite/pulls)
 [![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/Sollimann/d-star-lite.svg)](https://GitHub.com/Sollimann/d-star-lite/pulls)
-[![HitCount](http://hits.dwyl.com/Sollimann/d-star-lite.svg)](http://hits.dwyl.com/Sollimann/d-star-lite)
+![ViewCount](https://views.whatilearened.today/views/github/Sollimann/d-star-lite.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ![pygame gui](docs/screengrab.png)
