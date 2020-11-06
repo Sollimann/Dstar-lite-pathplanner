@@ -1,9 +1,6 @@
-[![Build Status](https://github.com/Sollimann/Dstar-lite-pathplanner/workflows/python-build/badge.svg)](https://github.com/Sollimann/Dstar-lite-pathplanner/actions)
-[![GitHub stars](https://img.shields.io/github/stars/Sollimann/d-star-lite.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/stargazers/)
-[![GitHub watchers](https://img.shields.io/github/watchers/Sollimann/d-star-lite.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/watchers/)
-[![GitHub forks](https://img.shields.io/github/forks/Sollimann/d-star-lite.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/network/)
 # D* Lite incremental pathplanning algorithm for robotics
 ### Implementation of the D* lite algorithm for pathplanning in Python and eventually also C++
+[![Build Status](https://github.com/Sollimann/Dstar-lite-pathplanner/workflows/python-build/badge.svg)](https://github.com/Sollimann/Dstar-lite-pathplanner/actions)
 [![version](https://img.shields.io/badge/version-1.0.0-blue)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/releases/)
 [![GitHub contributors](https://img.shields.io/github/contributors/Sollimann/d-star-lite.svg)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/graphs/contributors/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/graphs/commit-activity)
