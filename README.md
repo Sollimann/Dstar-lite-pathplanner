@@ -11,7 +11,10 @@
 ![ViewCount](https://views.whatilearened.today/views/github/Sollimann/Dstar-lite-pathplanner.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-![pygame gui](docs/screengrab.png)
+
+<p align="center">
+  <img src="https://github.com/Sollimann/Dstar-lite-pathplanner/blob/master/docs/Dstar.gif">
+</p>
 
 
 This software is an implementation of the D*-Lite algorithm as explained in [Koenig, 2002](http://idm-lab.org/bib/abstracts/papers/aaai02b.pdf). The D* Lite algorithm was developed by Sven Koenig and Maxim Likhachev for a faster more lightweight alternative to the D* algorithm (developed by Anthony Stentz in 1995). 
