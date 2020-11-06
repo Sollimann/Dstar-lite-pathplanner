@@ -2,7 +2,6 @@
 ### Implementation of the D* lite algorithm for pathplanning in Python and eventually also C++
 [![Build Status](https://github.com/Sollimann/Dstar-lite-pathplanner/workflows/python-build/badge.svg)](https://github.com/Sollimann/Dstar-lite-pathplanner/actions)
 [![version](https://img.shields.io/badge/version-1.0.0-blue)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/releases/)
-[![GitHub contributors](https://img.shields.io/github/contributors/Sollimann/d-star-lite.svg)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/graphs/contributors/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/graphs/commit-activity)
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/Sollimann/d-star-lite.svg)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/pulls)
 [![GitHub pull-requests closed](https://img.shields.io/github/issues-pr-closed/Sollimann/d-star-lite.svg)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/pulls)
