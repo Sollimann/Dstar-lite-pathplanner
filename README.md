@@ -1,3 +1,4 @@
+[![Build Status](https://github.com/Sollimann/Dstar-lite-pathplanner/workflows/python-build/badge.svg)](https://github.com/Sollimann/Dstar-lite-pathplanner/actions)
 [![GitHub stars](https://img.shields.io/github/stars/Sollimann/d-star-lite.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/stargazers/)
 [![GitHub watchers](https://img.shields.io/github/watchers/Sollimann/d-star-lite.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/watchers/)
 [![GitHub forks](https://img.shields.io/github/forks/Sollimann/d-star-lite.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/network/)
