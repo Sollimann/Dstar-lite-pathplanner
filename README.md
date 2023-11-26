@@ -1,6 +1,6 @@
 # D* Lite incremental pathplanning algorithm for robotics
-### Implementation of the D* lite algorithm for pathplanning in Python and eventually also C++
-[![Build Status](https://github.com/Sollimann/Dstar-lite-pathplanner/workflows/python-build/badge.svg)](https://github.com/Sollimann/Dstar-lite-pathplanner/actions)
+### Implementation of the D* lite algorithm for pathplanning in Python.
+[![Build Status](https://github.com/Sollimann/Dstar-lite-pathplanner/actions/workflows/python-build.yml/badge.svg)](https://github.com/Sollimann/Dstar-lite-pathplanner/actions)
 [![version](https://img.shields.io/badge/version-1.0.0-blue)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/releases/)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/graphs/commit-activity)
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/Sollimann/d-star-lite.svg)](https://GitHub.com/Sollimann/Dstar-lite-pathplanner/pulls)
